@@ -14,8 +14,9 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(3000);
-  console.log('🚀 API running on http://localhost:3000/api');
+  const port = Number(process.env.PORT) || 3000;
+  await app.listen(port);
+  console.log(`🚀 API running on http://localhost:${port}/api`);
 }
 
 bootstrap();

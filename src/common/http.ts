@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 
 export type HttpHeaders = Record<string, string | string[] | undefined>;
 
@@ -11,6 +11,7 @@ export interface HttpResult<T> {
 
 @Injectable()
 export class HttpService {
+  private readonly logger = new Logger(HttpService.name);
   private readonly client: AxiosInstance;
 
   constructor() {
@@ -49,7 +50,7 @@ export class HttpService {
         status: response.status,
       };
     } catch (error) {
-      console.log(error);
+      this.logger.error(`HTTP POST failed: ${url}`, error instanceof Error ? error.stack : undefined);
       throw new InternalServerErrorException(`HTTP POST failed: ${url}`);
     }
   }
